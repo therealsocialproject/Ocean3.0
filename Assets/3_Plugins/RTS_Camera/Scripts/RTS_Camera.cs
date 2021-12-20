@@ -102,10 +102,13 @@ namespace RTS_Cam
 
         public bool useKeyboardRotation = true;
         public KeyCode rotateRightKey = KeyCode.X;
+        public KeyCode rotateUpKey = KeyCode.Y;
+        public KeyCode rotateDownKey = KeyCode.H;
         public KeyCode rotateLeftKey = KeyCode.Z;
 
         public bool useMouseRotation = true;
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
+        public KeyCode mouseVirticalRotationKey = KeyCode.Mouse2;
 
         private Vector2 KeyboardInput
         {
@@ -157,6 +160,23 @@ namespace RTS_Cam
                 else if(!rotateLeft && rotateRight)
                     return 1;
                 else 
+                    return 0;
+            }
+        }
+
+        private int RotationVerticalDirection
+        {
+            get
+            {
+                bool rotateUp = Input.GetKey(rotateUpKey);
+                bool rotateDown = Input.GetKey(rotateDownKey);
+                if (rotateUp && rotateDown)
+                    return 0;
+                else if (rotateUp && !rotateDown)
+                    return -1;
+                else if (!rotateUp && rotateDown)
+                    return 1;
+                else
                     return 0;
             }
         }
@@ -284,6 +304,9 @@ namespace RTS_Cam
 
             if (useMouseRotation && Input.GetKey(mouseRotationKey))
                 m_Transform.Rotate(Vector3.up, -MouseAxis.x * Time.deltaTime * mouseRotationSpeed, Space.World);
+
+            if (useMouseRotation && Input.GetKey(mouseVirticalRotationKey))
+                m_Transform.Rotate(Vector3.up, -MouseAxis.y * Time.deltaTime * mouseRotationSpeed, Space.World);
         }
 
         /// <summary>
